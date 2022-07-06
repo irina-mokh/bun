@@ -1,4 +1,4 @@
-import { Action } from '../db/models.js';
+import { Action, Category } from '../db/models.js';
 
 class ActionController {
   async getAll (req, res) {
@@ -21,6 +21,20 @@ class ActionController {
   async create (req, res) {
     const { sum, from, to } = req.body;
     const action = await Action.create( { sum, from, to} );
+
+    const catFrom = await Category.findByPk(from);
+    const catTo = await Category.findByPk(to);
+    
+    if (catFrom.type === "income") {
+      catFrom.total = catFrom.total + sum;
+    } else {
+      catFrom.total = catFrom.total - sum
+    };
+
+    catTo.total = catFrom.total + sum;
+    
+    await catFrom.save();
+    await catTo.save();
     return res.json(action);
   }
 

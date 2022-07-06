@@ -11,13 +11,15 @@ class CategoryController {
   }
 
   async create (req, res) {
-    const { name, type } = req.body;
-    const category = await Category.create( { name, type} );
+    const { name, type, total } = req.body;
+    const category = await Category.create( { name, type, total} );
     return res.json(category);
   }
 
-  async edit () {
-    
+  async edit (req, res) {
+    // const { name, type, total } = req.body;
+    // const category = await Category.set( { name, type, total} );
+    // return res.json(category);
   }
 
   async delete () {
