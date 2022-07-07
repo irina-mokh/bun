@@ -6,10 +6,6 @@ class CategoryController {
     return res.json(categories);
   }
 
-  async getById () {
-    
-  }
-
   async create (req, res) {
     const { name, type, total } = req.body;
     const category = await Category.create( { name, type, total} );
@@ -17,9 +13,9 @@ class CategoryController {
   }
 
   async edit (req, res) {
-    // const { name, type, total } = req.body;
-    // const category = await Category.set( { name, type, total} );
-    // return res.json(category);
+    const { name, type, total } = req.body;
+    const category = await Category.set( { name, type, total} );
+    return res.json(category);
   }
 
   async delete () {

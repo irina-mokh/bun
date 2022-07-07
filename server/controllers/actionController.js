@@ -14,8 +14,15 @@ class ActionController {
     return res.json(actions);
   }
 
-  async getById () {
-    
+  async getByCat (req, res) {
+    const { from } = req.body;
+    let actions;
+    if (!from) {
+      actions = await Action.findAll();
+    } else {
+      actions = await Action.findAll({where: {from}});
+
+    }
   }
 
   async create (req, res) {
