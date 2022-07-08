@@ -1,4 +1,4 @@
-export class ApiError extends Error {
+class ApiError extends Error {
   constructor(status, message){
     super();
     this.status = status;
@@ -18,3 +18,5 @@ export class ApiError extends Error {
   }
   
 }
+
+export const apiError = new ApiError();

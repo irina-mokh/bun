@@ -1,4 +1,4 @@
-import { ApiError} from '../error/ApiError.js';
+import { apiError } from '../error/ApiError.js';
 // const bcrypt = require('bcrypt')
 // const jwt = require('jsonwebtoken')
 // const {User, Basket} = require('../models/models')
@@ -47,7 +47,7 @@ class UserController {
     async check(req, res, next) {
       const {id} = req.query;
       if (!id) {
-        return next(ApiError.badRequest('ID is required'));
+        return next(apiError.badRequest('ID is required'));
       }
       res.json(id);
         // const token = generateJwt(req.user.id, req.user.email, req.user.role)
