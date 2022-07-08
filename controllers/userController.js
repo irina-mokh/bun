@@ -1,4 +1,4 @@
-import { apiError } from '../error/ApiError.js';
+import { apiError } from '../error/apiError.js';
 // const bcrypt = require('bcrypt')
 // const jwt = require('jsonwebtoken')
 // const {User, Basket} = require('../models/models')
