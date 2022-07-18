@@ -2,35 +2,25 @@ import { Action, Category } from '../db/models.js';
 
 class ActionController {
   async getAll (req, res) {
-    const { columnId } = req.body;
-    let actions;
-    if (!columnId) {
-      actions = await Action.findAll();
-    } else {
-      actions = await Action.findAll({where: {columnId}});
-
-    }
-
+    const actions = await Action.findAll();
     return res.json(actions);
   }
 
   async getById (req, res) {
     const { id } = req.params;
-    const action = await Action.findOne(
-      {
-          where: {id},
-      },
-  )
+    const action = await Action.findOne({where: {id}})
     return res.json(action);
   }
 
   async getByCat (req, res) {
-    const { from } = req.body;
+    const { from, to } = req.body;
     let actions;
     if (!from) {
       actions = await Action.findAll();
     } else {
-      actions = await Action.findAll({where: {from}});
+      actions = await Action.findAll({where: {
+        [Op.or]: [ from, to ]
+      }});
 
     }
   }
