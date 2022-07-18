@@ -6,6 +6,13 @@ class CategoryController {
     return res.json(categories);
   }
 
+  async getById (req, res) {
+    const { id } = req.body;
+    const category = await Category.findByPk(id);
+    return res.json(category);
+  }
+
+
   async create (req, res) {
     const { name, type, total } = req.body;
     const category = await Category.create( { name, type, total} );
