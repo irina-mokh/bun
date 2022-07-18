@@ -7,7 +7,7 @@ class CategoryController {
   }
 
   async getById (req, res) {
-    const { id } = req.body;
+    const { id } = req.params;
     // const category = await Category.findByPk(id);
     const category = await Category.findOne(
       {
