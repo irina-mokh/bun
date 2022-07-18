@@ -14,6 +14,16 @@ class ActionController {
     return res.json(actions);
   }
 
+  async getById (req, res) {
+    const { id } = req.params;
+    const action = await Action.findOne(
+      {
+          where: {id},
+      },
+  )
+    return res.json(action);
+  }
+
   async getByCat (req, res) {
     const { from } = req.body;
     let actions;
