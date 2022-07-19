@@ -1,8 +1,22 @@
 import { Action, Category } from '../db/models.js';
+import { Op } from 'sequelize';
 
 class ActionController {
   async getAll (req, res) {
-    const actions = await Action.findAll();
+    let actions;
+    const {catId} = req.query;
+    console.log(req.query);
+    if (!catId) {
+      actions = await Action.findAll();
+    } else {
+      actions = await Action.findAll({where: {
+        [Op.or]: [ 
+          {from: catId},
+          {to: catId},
+        ]
+      }});
+
+    }
     return res.json(actions);
   }
 
@@ -10,19 +24,6 @@ class ActionController {
     const { id } = req.params;
     const action = await Action.findOne({where: {id}})
     return res.json(action);
-  }
-
-  async getByCat (req, res) {
-    const { from, to } = req.body;
-    let actions;
-    if (!from) {
-      actions = await Action.findAll();
-    } else {
-      actions = await Action.findAll({where: {
-        [Op.or]: [ from, to ]
-      }});
-
-    }
   }
 
   async create (req, res) {
