@@ -47,11 +47,9 @@ class ActionController {
   }
 
   async edit () {
-    
   }
 
   async delete () {
-    
   }
 }
 
