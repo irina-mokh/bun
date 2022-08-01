@@ -3,8 +3,6 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import {User} from'../db/models.js';
 
-// import { QueryError } from "sequelize/types";
-
 const generateJwt = (id, email) => {
     return jwt.sign(
         {id, email},
@@ -18,15 +16,15 @@ class UserController {
         const {email, password} = req.body
         if (!email || !password) {
 
-          return next(ApiError.badRequest('Wrong email or password'))
+          return next(ApiError.badRequest('Wrong email or password'));
         }
-        const candidate = await User.findOne({where: {email}})
+        const candidate = await User.findOne({where: {email}});
         if (candidate) {
             return next(ApiError.badRequest('User already exists'))
         }
-        const hashPassword = await bcrypt.hash(password, 5)
-        const user = await User.create({email, password: hashPassword})
-        const token = generateJwt(user.id, user.email)
+        const hashPassword = await bcrypt.hash(password, 5);
+        const user = await User.create({email, password: hashPassword});
+        const token = generateJwt(user.id, user.email);
         return res.json({
             token: token, 
             user: user,
@@ -34,14 +32,14 @@ class UserController {
     }
 
     async login(req, res, next) {
-        const {email, password} = req.body
+        const {email, password} = req.body;
         const user = await User.findOne({where: {email}})
         if (!user) {
-            return next(ApiError.internal('No user found'))
+            return next(ApiError.internal('No user found'));
         }
         let comparePassword = bcrypt.compareSync(password, user.password)
         if (!comparePassword) {
-            return next(ApiError.internal('Wrong password'))
+            return next(ApiError.internal('Wrong password'));
         }
         const token = generateJwt(user.id, user.email)
         return res.json({
@@ -56,8 +54,8 @@ class UserController {
         return next(ApiError.badRequest('ID is required'));
       }
       res.json(id);
-      const token = generateJwt(req.user.id, req.user.email)
-      return res.json({token})
+      const token = generateJwt(req.user.id, req.user.email);
+      return res.json({token});
     }
 }
 
