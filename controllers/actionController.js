@@ -15,7 +15,6 @@ class ActionController {
           {to: catId},
         ]
       }});
-
     }
     return res.json(actions);
   }
