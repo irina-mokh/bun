@@ -27,7 +27,10 @@ class UserController {
         const hashPassword = await bcrypt.hash(password, 5)
         const user = await User.create({email, password: hashPassword})
         const token = generateJwt(user.id, user.email)
-        return res.json({token, user})
+        return res.json({
+            token: token, 
+            user: user,
+        })
     }
 
     async login(req, res, next) {
@@ -41,7 +44,11 @@ class UserController {
             return next(ApiError.internal('Wrong password'))
         }
         const token = generateJwt(user.id, user.email)
-        return res.json({token, user})
+        console.log(user);
+        return res.json({
+            token: token, 
+            user: user,
+        })
     }
 
     async check(req, res, next) {
