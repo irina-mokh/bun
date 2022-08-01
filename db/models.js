@@ -56,18 +56,9 @@ export const Category = sequelize.define('category', {
   timestamps: false,
 })
 
-// CategoryType.hasOne(Category, {foreignKey: 'type'});
-// Category.belongsTo(CategoryType, {foreignKey: 'type'});
+User.hasMany(Category);
+Category.belongsTo(User);
 
-
-// Category.hasMany(Action);
-// Category.hasMany(Action, { as: 'actTo', foreignKey : 'catToId'});
-// Category.hasMany(Action, { as: 'actFrom', foreignKey : 'catFromId'});
 Action.belongsTo(Category, {foreignKey: 'to'});
 Action.belongsTo(Category, {foreignKey: 'from'});
 
-// Category.hasOne(Action);
-// Action.belongsTo(Category);
-
-// Action.belongsTo(Category, { foreignKey: 'actionTo'});
-// Category.belongsToMany(Action, { through: 'actionTo'});
