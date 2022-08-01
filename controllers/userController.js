@@ -15,10 +15,9 @@ const generateJwt = (id, email) => {
 
 class UserController {
     async registration(req, res, next) {
-      console.log(req.body);
         const {email, password} = req.body
         if (!email || !password) {
-          // console.log('Wrong email or password')
+
           return next(ApiError.badRequest('Wrong email or password'))
         }
         const candidate = await User.findOne({where: {email}})
