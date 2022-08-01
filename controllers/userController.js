@@ -44,7 +44,6 @@ class UserController {
             return next(ApiError.internal('Wrong password'))
         }
         const token = generateJwt(user.id, user.email)
-        console.log(user);
         return res.json({
             token: token, 
             user: user,
