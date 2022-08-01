@@ -27,17 +27,6 @@ export const Action = sequelize.define('action', {
   },
 });
 
-// export const CategoryType = sequelize.define('categoryType', {
-//   name: {
-//       primaryKey: true,
-//       allowNull: false,
-//       type: DataTypes.STRING,
-//       unique: true,
-//   },
-// }, { 
-//   timestamps: false,
-// })
-
 export const Category = sequelize.define('category', {
   id: { 
     type: DataTypes.INTEGER,
