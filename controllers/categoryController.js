@@ -2,7 +2,7 @@ import { Category } from '../db/models.js';
 
 class CategoryController {
   async getAll (req, res) {
-    const { userId } = req.params;
+    const { userId } = req.query;
 
     const categories = await Category.findAll({where: {userId}});
     return res.json(categories);
