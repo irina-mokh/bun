@@ -27,8 +27,9 @@ class CategoryController {
     return res.json(category);
   }
 
-  async delete () {
-    
+  async delete (req) {
+    const { id } = req.body;
+    Category.destroy({where: {id}})
   }
 }
 
