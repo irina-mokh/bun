@@ -30,7 +30,7 @@ class CategoryController {
   async delete (req, res) {
     const { id } = req.body;
     await Category.destroy({where: {id}});
-    return res.json(`Category with id ${id} deleted.`);
+    return res.json({ message:`Category with id ${id} deleted.`});
   }
 }
 
