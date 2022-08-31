@@ -38,7 +38,7 @@ class ActionController {
       catFrom.total = Number(catFrom.total) - Number(sum)
     };
 
-    catTo.total = Number(catFrom.total) + Number(sum);
+    catTo.total = Number(catTo.total) + Number(sum);
     
     await catFrom.save();
     await catTo.save();
