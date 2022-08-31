@@ -26,7 +26,7 @@ export const Action = sequelize.define('action', {
     allowNull: false
   },
   date: {
-    type: DataTypes.DATE,
+    type: DataTypes.DATEONLY,
   }
 });
 
