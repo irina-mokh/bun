@@ -27,7 +27,7 @@ class ActionController {
 
   async create (req, res) {
     const { sum, from, to } = req.body;
-    const action = await Action.create( { sum, from, to} );
+    const action = await Action.create( { sum, from, to, date} );
 
     const catFrom = await Category.findByPk(from);
     const catTo = await Category.findByPk(to);

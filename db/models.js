@@ -25,6 +25,9 @@ export const Action = sequelize.define('action', {
     type: DataTypes.DECIMAL(10, 2),
     allowNull: false
   },
+  date: {
+    type: DataTypes.DATE,
+  }
 });
 
 export const Category = sequelize.define('category', {
