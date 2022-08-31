@@ -33,12 +33,12 @@ class ActionController {
     const catTo = await Category.findByPk(to);
     
     if (catFrom.type === "income") {
-      catFrom.total = +catFrom.total + sum;
+      catFrom.total = Number(catFrom.total) + Number(sum);
     } else {
-      catFrom.total = +catFrom.total - sum
+      catFrom.total = Number(catFrom.total) - Number(sum)
     };
 
-    catTo.total = +catFrom.total + sum;
+    catTo.total = Number(catFrom.total) + Number(sum);
     
     await catFrom.save();
     await catTo.save();
