@@ -29,46 +29,46 @@ class ActionController {
     const { sum, from, to, date } = req.body;
     const action = await Action.create( { sum, from, to, date} );
 
-    await this.updateCategories(from, to, sum);
+    await updateCategories(from, to, sum);
 
     return res.json(action);
   }
 
-  async edit () {
+  async edit (req, res) {
     const { id, sum, from, to } = req.body;
 
-    const action = await Action.find({where: {id}});
-    await this.updateCategories(from, to, action.sum - sum);
+    const action = await Action.findOne({where: {id}});
+    await updateCategories(from, to, action.sum - sum);
     action = req.body;
     action.save();
 
     return res.json(action);
   }
 
-  async delete () {
+  async delete (req, res) {
     const { id } = req.body;
-    const action = await Action.find({where: {id}});
-    await this.updateCategories(action.from, action.to, -action.sum);
+    const action = await Action.findOne({where: {id}});
+    await updateCategories(action.from, action.to, -action.sum);
     
     await Action.destroy({where: {id}});
     return res.json({ message:`Action with id ${id} deleted.`});
   }
-
-  async updateCategories (from, to, sum) {
-    const catFrom = await Category.findByPk(from);
-    const catTo = await Category.findByPk(to);
-    
-    if (catFrom.type === "income") {
-      catFrom.total = Number(catFrom.total) + Number(sum);
-    } else {
-      catFrom.total = Number(catFrom.total) - Number(sum)
-    };
-
-    catTo.total = Number(catTo.total) + Number(sum);
-
-    await catFrom.save();
-    await catTo.save();
-  }
 }
 
 export const actionController = new ActionController();
+
+async function updateCategories (from, to, sum) {
+  const catFrom = await Category.findByPk(from);
+  const catTo = await Category.findByPk(to);
+  
+  if (catFrom.type === "income") {
+    catFrom.total = Number(catFrom.total) + Number(sum);
+  } else {
+    catFrom.total = Number(catFrom.total) - Number(sum)
+  };
+
+  catTo.total = Number(catTo.total) + Number(sum);
+
+  await catFrom.save();
+  await catTo.save();
+}
