@@ -46,9 +46,21 @@ class ActionController {
   }
 
   async edit () {
+    const { id, sum, from, to, date } = req.body;
+
+    const action = await Action.find({where: {id}});
+    action.sum = sum;
+    action.date = date;
+    action.from = from;
+    action.to = to;
+    action.save();
+    return res.json(action);
   }
 
   async delete () {
+    const { id } = req.body;
+    await Action.destroy({where: {id}});
+    return res.json({ message:`Action with id ${id} deleted.`});
   }
 }
 
