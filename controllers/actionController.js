@@ -29,6 +29,33 @@ class ActionController {
     const { sum, from, to, date } = req.body;
     const action = await Action.create( { sum, from, to, date} );
 
+    this.updateCategories(from, to, sum);
+
+    return res.json(action);
+  }
+
+  async edit () {
+    const { id, sum, from, to, date } = req.body;
+
+    const action = await Action.find({where: {id}});
+    action = req.body;
+    action.save();
+
+    this.updateCategories(from, to, sum);
+
+    return res.json(action);
+  }
+
+  async delete () {
+    const { id } = req.body;
+    const action = await Action.find({where: {id}});
+    this.updateCategories(action.from, action.to, -action.sum);
+    
+    await Action.destroy({where: {id}});
+    return res.json({ message:`Action with id ${id} deleted.`});
+  }
+
+  async updateCategories (from, to, sum) {
     const catFrom = await Category.findByPk(from);
     const catTo = await Category.findByPk(to);
     
@@ -39,28 +66,9 @@ class ActionController {
     };
 
     catTo.total = Number(catTo.total) + Number(sum);
-    
+
     await catFrom.save();
     await catTo.save();
-    return res.json(action);
-  }
-
-  async edit () {
-    const { id, sum, from, to, date } = req.body;
-
-    const action = await Action.find({where: {id}});
-    action.sum = sum;
-    action.date = date;
-    action.from = from;
-    action.to = to;
-    action.save();
-    return res.json(action);
-  }
-
-  async delete () {
-    const { id } = req.body;
-    await Action.destroy({where: {id}});
-    return res.json({ message:`Action with id ${id} deleted.`});
   }
 }
 
