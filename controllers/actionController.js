@@ -29,19 +29,18 @@ class ActionController {
     const { sum, from, to, date } = req.body;
     const action = await Action.create( { sum, from, to, date} );
 
-    this.updateCategories(from, to, sum);
+    await this.updateCategories(from, to, sum);
 
     return res.json(action);
   }
 
   async edit () {
-    const { id, sum, from, to, date } = req.body;
+    const { id, sum, from, to } = req.body;
 
     const action = await Action.find({where: {id}});
+    await this.updateCategories(from, to, action.sum - sum);
     action = req.body;
     action.save();
-
-    this.updateCategories(from, to, sum);
 
     return res.json(action);
   }
@@ -49,7 +48,7 @@ class ActionController {
   async delete () {
     const { id } = req.body;
     const action = await Action.find({where: {id}});
-    this.updateCategories(action.from, action.to, -action.sum);
+    await this.updateCategories(action.from, action.to, -action.sum);
     
     await Action.destroy({where: {id}});
     return res.json({ message:`Action with id ${id} deleted.`});
