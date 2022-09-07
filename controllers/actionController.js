@@ -48,7 +48,10 @@ class ActionController {
   async delete (req, res) {
     const { id } = req.body;
     const action = await Action.findOne({where: {id}});
-    await updateCategories(action.from, action.to, -action.sum);
+    console.log(action);
+    if (action.from && action.to) {
+      await updateCategories(action.from, action.to, -action.sum);
+    }
     
     await Action.destroy({where: {id}});
     return res.json({ message:`Action with id ${id} deleted.`});
