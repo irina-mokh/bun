@@ -29,7 +29,9 @@ class ActionController {
     const { sum, from, to, date } = req.body;
     const action = await Action.create( { sum, from, to, date} );
 
-    await updateCategories(from, to, sum);
+    if (action.from && action.to) {
+      await updateCategories(from, to, sum);
+    };
 
     return res.json(action);
   }
@@ -48,7 +50,7 @@ class ActionController {
   async delete (req, res) {
     const { id } = req.body;
     const action = await Action.findOne({where: {id}});
-    
+
     await updateCategories(action.from, action.to, -action.sum);
     
     await Action.destroy({where: {id}});
