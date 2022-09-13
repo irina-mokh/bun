@@ -1,7 +1,7 @@
 {
-  "name": "bun-server",
+  "name": "donut-server",
   "version": "1.0.0",
-  "description": "bun backend",
+  "description": "donut backend",
   "main": "index.js",
   "type": "module",
   "scripts": {
