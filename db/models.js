@@ -1,5 +1,6 @@
 import { sequelize } from './index.js';
 import { DataTypes } from "sequelize";
+import moment from 'moment/moment.js';
 
 export const User = 
   sequelize.define('user', {
@@ -28,7 +29,7 @@ export const Action = sequelize.define('action', {
   date: {
     type: DataTypes.DATEONLY,
     get: function() {
-      return moment(this.getDataValue('date')).format('YYYY[-]MM[-]DD')
+      return moment(this.getDataValue('createdAt')).format('YYYY-MM-DD')
     }
   }
 });
