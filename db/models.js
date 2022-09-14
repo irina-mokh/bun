@@ -27,6 +27,9 @@ export const Action = sequelize.define('action', {
   },
   date: {
     type: DataTypes.DATEONLY,
+    get: function() {
+      return moment(this.getDataValue('createdAt')).format('YYYY-MM-DD')
+    }
   }
 });
 
