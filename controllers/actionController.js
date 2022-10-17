@@ -35,14 +35,13 @@ class ActionController {
   }
 
   async edit (req, res) {
-    const { id, sum, from, to } = req.body;
+    const { id, sum, from, to, date } = req.body;
 
-    const action = await Action.findOne({where: {id}});
+    let action = await Action.findOne({where: {id}});
     await updateCategories(from, to, action.sum - sum);
-    action = req.body;
-    action.save();
-
-    return res.json(action);
+    await Action.update({sum, from, to, date}, {where: {id}});
+    let actionNew = await Action.findOne({where: {id}});
+    return res.json(actionNew);
   }
 
   async delete (req, res) {
