@@ -39,13 +39,14 @@ class ActionController {
 
     let prev = await Action.findOne({where: {id}});
     let diffSum = sum - prev.sum;
+
     // if any category changed
-    if (prev.from !== from || prev.to !== to){
+    if (prev.from != from || prev.to != to){
+      console.log('!!!category changed')
       updateCatTotal(prev.from, -sum);
       updateCatTotal(prev.to, -sum);
       diffSum = sum;
     }
-
     await updateCategories(from, to, diffSum);
 
     await Action.update({sum, from, to, date}, {where: {id}});
