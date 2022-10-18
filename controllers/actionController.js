@@ -37,8 +37,17 @@ class ActionController {
   async edit (req, res) {
     const { id, sum, from, to, date } = req.body;
 
-    let action = await Action.findOne({where: {id}});
-    await updateCategories(from, to, action.sum - sum);
+    let prev = await Action.findOne({where: {id}});
+    let diffSum = sum - prev.sum;
+    // if any category changed
+    if (prev.from !== from || prev.to !== to){
+      updateCatTotal(prev.from, -sum);
+      updateCatTotal(prev.to, -sum);
+      diffSum = sum;
+    }
+
+    await updateCategories(from, to, diffSum);
+
     await Action.update({sum, from, to, date}, {where: {id}});
     let actionNew = await Action.findOne({where: {id}});
     return res.json(actionNew);
@@ -59,18 +68,29 @@ class ActionController {
 
 export const actionController = new ActionController();
 
-async function updateCategories (from, to, sum) {
-  const catFrom = await Category.findByPk(from);
-  const catTo = await Category.findByPk(to);
-  
-  if (catFrom.type === "income") {
-    catFrom.total = Number(catFrom.total) + Number(sum);
+async function updateCatTotal (id, sum){
+  const cat = await Category.findByPk(id);
+  console.log(cat);
+  if (cat.type === "income") {
+    await Category.update({total: Number(cat.total) - Number(sum)}, {where: {id}});
   } else {
-    catFrom.total = Number(catFrom.total) - Number(sum)
+    await Category.update({total: Number(cat.total) + Number(sum)}, {where: {id}});
   };
+}
+async function updateCategories (from, to, sum) {
+  // const catFrom = await Category.findByPk(from);
+  // const catTo = await Category.findByPk(to);
 
-  catTo.total = Number(catTo.total) + Number(sum);
+  updateCatTotal(from, -sum);
+  updateCatTotal(to, sum);
+  // if (catFrom.type === "income") {
+  //   catFrom.total = Number(catFrom.total) + Number(sum);
+  // } else {
+  //   catFrom.total = Number(catFrom.total) - Number(sum)
+  // };
 
-  await catFrom.save();
-  await catTo.save();
+  // catTo.total = Number(catTo.total) + Number(sum);
+
+  // await catFrom.save();
+  // await catTo.save();
 }
