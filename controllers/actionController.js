@@ -26,7 +26,9 @@ class ActionController {
 
   async create (req, res) {
     const { sum, from, to, date } = req.body;
-    const action = await Action.create( { sum, from, to, date} );
+    console.log('req body', req.body);
+    console.log('create act: date', date);
+    const action = await Action.create( { sum, from, to, date } );
     await updateCategories(from, to, sum);
 
     return res.json(action);
@@ -66,7 +68,6 @@ export const actionController = new ActionController();
 
 async function updateCatTotal (id, sum){
   const cat = await Category.findByPk(id);
-  console.log(cat);
   if (cat.type === "income") {
     await Category.update({total: Number(cat.total) - Number(sum)}, {where: {id}});
   } else {
