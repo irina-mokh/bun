@@ -27,10 +27,12 @@ export const Action = sequelize.define('action', {
     allowNull: false
   },
   date: {
-    type: DataTypes.DATEONLY,
-    get: function() {
-      return moment(this.getDataValue('createdAt')).format('YYYY-MM-DD')
-    }
+    type: DataTypes.STRING,
+    allowNull: false
+    // type: DataTypes.DATEONLY,
+    // get: function() {
+    //   return moment(this.getDataValue('createdAt')).format('YYYY-MM-DD')
+    // }
   }
 });
 
