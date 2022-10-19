@@ -26,8 +26,6 @@ class ActionController {
 
   async create (req, res) {
     const { sum, from, to, date } = req.body;
-    console.log('req body', req.body);
-    console.log('create act: date', date);
     const action = await Action.create( { sum, from, to, date } );
     await updateCategories(from, to, sum);
 
@@ -41,10 +39,11 @@ class ActionController {
 
     // if any category changed
     if (prev.from != from || prev.to != to){
-      updateCatTotal(prev.from, -sum);
-      updateCatTotal(prev.to, -sum);
+      await updateCatTotal(prev.from, prev.sum);
+      await updateCatTotal(prev.to, -prev.sum);
       diffSum = sum;
     }
+    // console.log('diff', diffSum);
     await updateCategories(from, to, diffSum);
 
     const actionNew = await Action.update({sum, from, to, date}, {where: {id}});
