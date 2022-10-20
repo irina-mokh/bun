@@ -22,8 +22,8 @@ class CategoryController {
   }
 
   async edit (req, res) {
-    const { name, type, total, userId} = req.body;
-    const category = await Category.set( { name, type, total, userId} );
+    const { name, type, total, id} = req.body;
+    const category = await Category.update( { name, type, total }, { where: {id}} );
     return res.json(category);
   }
 
