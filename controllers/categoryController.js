@@ -3,9 +3,16 @@ import { Action, Category } from '../db/models.js';
 class CategoryController {
   async getAll (req, res) {
     const { userId } = req.query;
+    const { period } = req.body;
 
-    const categories = await Category.findAll({where: {userId}});
-    return res.json(categories);
+    let categories = await Category.findAll({where: {userId}});
+    if (period) {
+      categories = categories.map(async (cat) => {
+        cat.total = await this.getTotalByPeriod(cat, period);
+        return cat;
+      })
+    }
+    return res.json(res);
   }
 
   async getById (req, res) {
