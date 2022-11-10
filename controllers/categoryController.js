@@ -1,52 +1,47 @@
-import { Action, Category } from '../db/models.js';
+import { Category } from '../db/models.js';
 
 class CategoryController {
   async getAll (req, res) {
-    const { userId, period } = req.query;
+    const { userId } = req.query;
 
     let categories = await Category.findAll({where: {userId}});
-    if (period) {
-      categories = categories.map(async (cat) => {
-        cat.total = await this.getTotalByPeriod(cat, period);
-        return cat;
-      })
-    }
     return res.json(categories);
   }
 
   async getById (req, res) {
     const { id } = req.params;
-    const { period } = req.body;
     const cat = await Category.findOne({where: {id}})
-
-    if (period) {
-      cat.total = await this.getTotalByPeriod(cat, period)
-    }
-    
     return res.json(cat);
   }
 
-  async getTotalByPeriod (cat, period) {
-    console.log('getTotalByPeriod', cat);
-    const newTotal = cat.total;
-    const actions = await Action.getAll(cat.id);
-    // filter actions by period
-    actions = actions.filter((act) => act.date.slice(0, 7) == period);
-    let actionsForSum;
-    switch (cat.type) {
-      case 'income' | 'expense':
-        actionsForSum = actions.filter((act) => act.date.slice(0, 7) == period);
-      case 'asset':
-        actionsForSum = actions.filter((act) => new Date(act.date.slice(0, 7)) <= new Date(period));
-    }
+  // async  getTotalByPeriod (catId, period) {
+  //   const cat = await Category.findOne({where: {id}})
+  //   let newTotal = cat.total;
+  //   console.log(cat.id);
+  //   const actions = await Action.findAll({where: {
+  //     [Op.or]: [ 
+  //       {from: cat.id},
+  //       {to: cat.id},
+  //     ]
+  //   }});
+  //   console.log('ALL ACTIONS:', actions);
+  //   // filter actions by period
+  //   let actionsForSum;
+  //   switch (cat.type) {
+  //     case 'income' | 'expense':
+  //       actionsForSum = actions.filter((act) => act.date.slice(0, 7) == period);
+  //     case 'asset':
+  //       actionsForSum = actions.filter((act) => new Date(act.date.slice(0, 7)) <= new Date(period));
+  //   }
   
-    actions.forEach((act) => {
-      newTotal += act.sum
-    })
-
-    return res.json(newTotal);
-  }
-
+  //   console.log('ACTS for sum:',actions);
+  
+  //   actionsForSum.forEach((act) => {
+  //     newTotal += act.sum
+  //   })
+  //   console.log('new total', newTotal);
+  //   return newTotal;
+  // }
 
   async create (req, res) {
     const { name, type, total, userId } = req.body;
