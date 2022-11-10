@@ -2,8 +2,7 @@ import { Action, Category } from '../db/models.js';
 
 class CategoryController {
   async getAll (req, res) {
-    const { userId } = req.query;
-    const { period } = req.body;
+    const { userId, period } = req.query;
 
     let categories = await Category.findAll({where: {userId}});
     if (period) {
