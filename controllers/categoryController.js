@@ -12,7 +12,7 @@ class CategoryController {
         return cat;
       })
     }
-    return res.json(res);
+    return res.json(categories);
   }
 
   async getById (req, res) {
@@ -28,6 +28,7 @@ class CategoryController {
   }
 
   async getTotalByPeriod (cat, period) {
+    console.log('getTotalByPeriod', cat);
     const newTotal = cat.total;
     const actions = await Action.getAll(cat.id);
     // filter actions by period
