@@ -27,7 +27,7 @@ class ActionController {
   async create (req, res) {
     const { sum, from, to, date } = req.body;
     const action = await Action.create( { sum, from, to, date } );
-    await updateCategories(from, to, sum);
+    // await updateCategories(from, to, sum);
 
     return res.json(action);
   }
@@ -39,12 +39,12 @@ class ActionController {
 
     // if any category changed
     if (prev.from != from || prev.to != to){
-      await updateCatTotal(prev.from, prev.sum);
-      await updateCatTotal(prev.to, -prev.sum);
+      // await updateCatTotal(prev.from, prev.sum);
+      // await updateCatTotal(prev.to, -prev.sum);
       diffSum = sum;
     }
     // console.log('diff', diffSum);
-    await updateCategories(from, to, diffSum);
+    // await updateCategories(from, to, diffSum);
 
     const actionNew = await Action.update({sum, from, to, date}, {where: {id}});
     return res.json(actionNew);
@@ -52,11 +52,11 @@ class ActionController {
 
   async delete (req, res) {
     const { id } = req.body;
-    const action = await Action.findOne({where: {id}});
+    // const action = await Action.findOne({where: {id}});
 
-    if (action.from && action.to) {
-      await updateCategories(action.from, action.to, -action.sum);
-    }
+    // if (action.from && action.to) {
+    //   await updateCategories(action.from, action.to, -action.sum);
+    // }
     
     await Action.destroy({where: {id}});
     return res.json({ message:`Action with id ${id} deleted.`});
@@ -65,15 +65,15 @@ class ActionController {
 
 export const actionController = new ActionController();
 
-async function updateCatTotal (id, sum){
-  const cat = await Category.findByPk(id);
-  if (cat.type === "income") {
-    await Category.update({total: Number(cat.total) - Number(sum)}, {where: {id}});
-  } else {
-    await Category.update({total: Number(cat.total) + Number(sum)}, {where: {id}});
-  };
-}
-async function updateCategories (from, to, sum) {
-  updateCatTotal(from, -sum);
-  updateCatTotal(to, sum);
-}
+// async function updateCatTotal (id, sum){
+//   const cat = await Category.findByPk(id);
+//   if (cat.type === "income") {
+//     await Category.update({total: Number(cat.total) - Number(sum)}, {where: {id}});
+//   } else {
+//     await Category.update({total: Number(cat.total) + Number(sum)}, {where: {id}});
+//   };
+// }
+// async function updateCategories (from, to, sum) {
+//   updateCatTotal(from, -sum);
+//   updateCatTotal(to, sum);
+// }
