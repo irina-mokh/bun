@@ -48,7 +48,7 @@ export const Category = sequelize.define('category', {
       isIn: [['income', 'asset', 'expense']],
     },
   },
-  total: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0},
+  start: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0},
   name: { type: DataTypes.STRING, allowNull: false},
 }, { 
   timestamps: false,

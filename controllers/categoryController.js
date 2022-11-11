@@ -44,14 +44,14 @@ class CategoryController {
   // }
 
   async create (req, res) {
-    const { name, type, total, userId } = req.body;
-    const category = await Category.create( { name, type, total, userId} );
+    const { name, type, start, userId } = req.body;
+    const category = await Category.create( { name, type, start, userId} );
     return res.json(category);
   }
 
   async edit (req, res) {
-    const { name, type, total, id} = req.body;
-    const category = await Category.update( { name, type, total }, { where: {id}} );
+    const { name, type, id} = req.body;
+    const category = await Category.update( { name, type, start }, { where: {id}} );
     return res.json(category);
   }
 
