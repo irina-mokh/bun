@@ -1,4 +1,4 @@
-import { Action, Category } from '../db/models.js';
+import { Action } from '../db/models.js';
 import { Op } from 'sequelize';
 
 class ActionController {

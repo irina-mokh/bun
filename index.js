@@ -23,9 +23,9 @@ async function startApp() {
   try {
     await sequelize.authenticate();
     // reset
-    await sequelize.sync({ force: true });
+    // await sequelize.sync({ force: true });
     // create
-    // await sequelize.sync();
+    await sequelize.sync();
 
     app.listen(PORT, () => console.log('SERVER STARTED ON PORT ' + PORT))
   } catch (e) {
