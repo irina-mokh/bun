@@ -51,7 +51,8 @@ class CategoryController {
 
   async edit (req, res) {
     const { name, type, id} = req.body;
-    const category = await Category.update( { name, type, start }, { where: {id}} );
+    await Category.update( { name, type, start }, { where: {id}} );
+    const category = await Category.findOne({where: {id}});
     return res.json(category);
   }
 
