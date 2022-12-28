@@ -27,32 +27,20 @@ class ActionController {
   async create (req, res) {
     const { sum, from, to, date } = req.body;
     const action = await Action.create( { sum, from, to, date } );
-    // await updateCategories(from, to, sum);
 
     return res.json(action);
   }
 
   async edit (req, res) {
-    const { id, sum, from, to, date } = req.body;
-    // let prev = await Action.findOne({where: {id}});
-    // let diffSum = sum - prev.sum;
+    const { id } = req.body;
+    const action = await Action.findOne({where: {id}})
+    action.update({...req.body});
 
-    // // if any category changed
-    // if (prev.from != from || prev.to != to){
-    //   diffSum = sum;
-    // }
-    await Action.update({sum, from, to, date}, {where: {id}});
-    const actionNew = await Action.findOne({where: {id}});
-    return res.json(actionNew);
+    return res.json(action);
   }
 
   async delete (req, res) {
     const { id } = req.body;
-    // const action = await Action.findOne({where: {id}});
-
-    // if (action.from && action.to) {
-    //   await updateCategories(action.from, action.to, -action.sum);
-    // }
     
     await Action.destroy({where: {id}});
     return res.json({ message:`Action with id ${id} deleted.`});
@@ -60,16 +48,3 @@ class ActionController {
 }
 
 export const actionController = new ActionController();
-
-// async function updateCatTotal (id, sum){
-//   const cat = await Category.findByPk(id);
-//   if (cat.type === "income") {
-//     await Category.update({total: Number(cat.total) - Number(sum)}, {where: {id}});
-//   } else {
-//     await Category.update({total: Number(cat.total) + Number(sum)}, {where: {id}});
-//   };
-// }
-// async function updateCategories (from, to, sum) {
-//   updateCatTotal(from, -sum);
-//   updateCatTotal(to, sum);
-// }
