@@ -34,19 +34,15 @@ class ActionController {
 
   async edit (req, res) {
     const { id, sum, from, to, date } = req.body;
-    let prev = await Action.findOne({where: {id}});
-    let diffSum = sum - prev.sum;
+    // let prev = await Action.findOne({where: {id}});
+    // let diffSum = sum - prev.sum;
 
-    // if any category changed
-    if (prev.from != from || prev.to != to){
-      // await updateCatTotal(prev.from, prev.sum);
-      // await updateCatTotal(prev.to, -prev.sum);
-      diffSum = sum;
-    }
-    // console.log('diff', diffSum);
-    // await updateCategories(from, to, diffSum);
-
-    const actionNew = await Action.update({sum, from, to, date}, {where: {id}});
+    // // if any category changed
+    // if (prev.from != from || prev.to != to){
+    //   diffSum = sum;
+    // }
+    await Action.update({sum, from, to, date}, {where: {id}});
+    const actionNew = await Action.findOne({where: {id}});
     return res.json(actionNew);
   }
 
