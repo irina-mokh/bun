@@ -7,17 +7,17 @@ import { errorHandler } from './middleware/errorHandlingMiddleware.js';
 const PORT = process.env.PORT || 5002;
 const app = express();
 
-let whitelist = ['https://mokh-donut.netlify.app/', 'http://localhost:3000'];
-let corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  }
-}
-app.use(cors(corsOptions));
+// let whitelist = ['https://mokh-donut.netlify.app/', 'http://localhost:3000'];
+// let corsOptions = {
+//   origin: function (origin, callback) {
+//     if (whitelist.indexOf(origin) !== -1) {
+//       callback(null, true)
+//     } else {
+//       callback(new Error('Not allowed by CORS'))
+//     }
+//   }
+// }
+app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use('/api', router);
